@@ -1,0 +1,41 @@
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["backend", "ml", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "TCH"]
+ignore = ["E501", "B008", "N815"]
+per-file-ignores = { "backend/tests/*" = ["S101"] }
+
+[tool.ruff.lint.isort]
+known-first-party = ["backend", "ml"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+ignore_missing_imports = true
+disallow_untyped_defs = true
+warn_return_any = false
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["backend/tests"]
+env = [
+    "SCHEDULER_ENABLED=false",
+    "ALPACA_LIVE_ENABLED=false",
+    "APP_ENV=testing",
+]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["backend"]
+omit = ["backend/tests/*", "backend/db/migrations/*"]
+
+[tool.coverage.report]
+fail_under = 80
